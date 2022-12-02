@@ -8,14 +8,17 @@ const dotenv = require('dotenv')
 // const data = require('./Data')
 
 dotenv.config({ path: './config.env' })
+const PORT = process.env.PORT;
 
 require('./database/conn');
 
-const User = require('./users/Models/usersSchema')
-
-const PORT = process.env.PORT;
 
 const app = express();
+
+app.use(express.json())
+
+
+app.use(require('./router/auth'))
 
 // const hello = [{ title: "Hello,world (again)" }];
 
@@ -28,6 +31,20 @@ const app = express();
 // app.get("/", (req, resp) => {
 //     resp.send(hello);
 // });
+
+//Routing
+
+app.get('/', (req, resp) => {
+    resp.send(`<h2>Welcome to Home Page`)
+})
+
+app.get('/about', (req, resp) => {
+    resp.send(`<h2>Welcome to About Page`)
+})
+
+app.get('/help', (req, resp) => {
+    resp.send(`<h2>Welcome to Help Page`)
+})
 
 app.listen(PORT, () => {
     console.log(`server running on PORT NUMBER ${PORT}`);
