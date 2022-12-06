@@ -1,13 +1,13 @@
 const mongoose = require("mongoose")
-
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
-    firstname: {
+    firstName: {
         type: String,
         required: true
     },
 
-    lastname: {
+    lastName: {
         type: String,
         required: true
     },
@@ -27,11 +27,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    conpassword: {
+    conPassword: {
         type: String,
         required: true
     },
 });
+
+userSchema.pre('save', async function (next) {
+    console.log("hbfklsdghslgvblkqhy")
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 12);
+        this.conPassword = await bcrypt.hash(this.conPassword, 12);
+    }
+    next();
+})
 
 const userModel = mongoose.model('MERN ', userSchema);
 
