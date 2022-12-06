@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require('bcryptjs')
+const jwt = require("jsonwebtoken")
 const router = express.Router();
 require("../database/conn");
 const User = require("../users/Models/usersSchema");
@@ -7,6 +8,14 @@ const User = require("../users/Models/usersSchema");
 router.get("/", (req, resp) => {
     resp.send(`<h2>Welcome to Home Page router</h2>`);
 });
+
+
+router.get('/about', (req, resp) => {
+    resp.cookie("Test", 'Deepak')
+    resp.send(`<h2>Welcome to About Page`);
+
+})
+
 
 router.post("/register", async (req, resp) => {
     const { firstName, lastName, email, phone, work, password, conPassword } =
@@ -65,10 +74,18 @@ router.post("/login", async (req, resp) => {
         if (userLogin) {
             const passMatch = await bcrypt.compare(password, userLogin.password)
 
+            let token = await userLogin.generateAuthToken()
+            console.log("token", token);
+
+            await resp.cookie("cdsa", token, {
+                expires: new Date(Date.now() + 25892000000),
+                httpOnly: true
+            })
+
             if (!passMatch) {
-                resp.json({ message: "user error" });
+                resp.status(400).json({ message: "user error" });
             } else {
-                resp.status(400).json({ message: "Sighnin Sucessfull" });
+                resp.status(400).json({ message: "Signin Sucessfull" });
             }
         } else {
             resp.json({ message: "Invalid data" });
@@ -81,5 +98,7 @@ router.post("/login", async (req, resp) => {
     //   console.log(req.body);
     //   resp.json({ message: "login data" });
 });
+
+
 
 module.exports = router;
