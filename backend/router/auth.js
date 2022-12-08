@@ -18,6 +18,7 @@ router.get('/about', (req, resp) => {
 
 
 router.post("/register", async (req, resp) => {
+    console.log("call register");
     const { firstName, lastName, email, phone, work, password, conPassword } =
         req.body;
     console.log("firstName===>", firstName);
@@ -77,18 +78,19 @@ router.post("/login", async (req, resp) => {
             let token = await userLogin.generateAuthToken()
             console.log("token", token);
 
-            await resp.cookie("cdsa", token, {
+            resp.cookie("cdsa", token, {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
             })
 
             if (!passMatch) {
                 resp.status(400).json({ message: "user error" });
-            } else {
-                resp.status(400).json({ message: "Signin Sucessfull" });
+            } else if (passMatch) {
+                resp.status(200).json({ message: "Signin Sucessfull" });
             }
-        } else {
-            resp.json({ message: "Invalid data" });
+        }
+        else {
+            resp.status(400).json({ message: "Invalid data" });
         }
 
 

@@ -1,5 +1,6 @@
-.App {
+.home {
   text-align: center;
+  overflow: hidden;
 }
 
 .App-logo {
@@ -13,15 +14,14 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.home h1 {
+  /* background-color: gainsboro; */
+  height: 89vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -46,7 +46,6 @@
   width: 1px;
   height: 11px;
 }
-
 
 .test {
   position: absolute;
@@ -73,7 +72,7 @@
   transform: rotate(90deg);
   transform-origin: right top;
   max-width: 300;
-  max-height:100;
+  max-height: 100;
   background-color: "#d3d3d3";
   margin-inline: "auto";
   margin-top: 100;
@@ -81,4 +80,53 @@
   white-space: "nowrap";
 }
 
+.App {
+  background-color: white;
+}
 
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  /* height: 100vh; */
+}
+
+.Auth-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 25px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+.Auth-form-login {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  margin-top: 100px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.Auth-form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
