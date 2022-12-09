@@ -1,6 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
+import { TextField } from "@mui/material";
 
 const About = () => {
+    const navigate = useNavigate();
+    const callAboutPageFun = async () => {
+        try {
+            const resp = await fetch('/about', {
+                method: "GEt",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+            const data = await resp.json();
+            console.log(data)
+            if (!resp === 200) {
+                const error = new Error(resp.error);
+                throw error;
+            }
+        } catch (err) {
+            console.log(err)
+            navigate('/login')
+        }
+    }
+
+    useEffect(() => {
+        callAboutPageFun()
+    }, [])
+
+
     return (
         <div className="container rounded bg-white mt-5 mb-5">
             <div className="row">
@@ -26,7 +56,7 @@ const About = () => {
                     <div className="row mt-2">
                         <div className="col-md-6">
                             <label className="labels">Name</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="first name"
@@ -35,7 +65,7 @@ const About = () => {
                         </div>
                         <div className="col-md-6">
                             <label className="labels">Surname</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 // value=""
@@ -46,7 +76,7 @@ const About = () => {
                     <div className="row mt-3">
                         <div className="col-md-12">
                             <label className="labels">Mobile Number</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter phone number"
@@ -55,7 +85,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Address Line 1</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter address line 1"
@@ -64,7 +94,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Address Line 2</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter address line 2"
@@ -73,7 +103,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Postcode</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter address line 2"
@@ -82,7 +112,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">State</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter address line 2"
@@ -91,7 +121,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Area</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter address line 2"
@@ -100,7 +130,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Email ID</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="enter email id"
@@ -109,7 +139,7 @@ const About = () => {
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Education</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="education"
@@ -120,7 +150,7 @@ const About = () => {
                     <div className="row mt-3">
                         <div className="col-md-6">
                             <label className="labels">Country</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="country"
@@ -129,7 +159,7 @@ const About = () => {
                         </div>
                         <div className="col-md-6">
                             <label className="labels">State/Region</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 // value=""
@@ -154,7 +184,7 @@ const About = () => {
                         <br />
                         <div className="col-md-12">
                             <label className="labels">Experience in Designing</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="experience"
@@ -164,7 +194,7 @@ const About = () => {
                         <br />
                         <div className="col-md-12">
                             <label className="labels">Additional Details</label>
-                            <input
+                            <TextField
                                 type="text"
                                 className="form-control"
                                 placeholder="additional details"

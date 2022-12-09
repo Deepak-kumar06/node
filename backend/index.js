@@ -1,5 +1,5 @@
 const express = require("express");
-// const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 // const helmet = require("helmet");
 // const morgan = require("morgan");
@@ -17,6 +17,8 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 app.use(require('./router/auth'))
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // const hello = [{ title: "Hello,world (again)" }];
 

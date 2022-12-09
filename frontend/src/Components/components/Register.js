@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { TextField } from '@mui/material'
 import axios from "axios";
 
 const Register = () => {
@@ -13,6 +14,13 @@ const Register = () => {
         password: "",
         conPassword: "",
     });
+    const [FirstNameError, setFirstNameError] = useState("")
+    const [lastNameError, setLastNameError] = useState("")
+    const [emailError, setEmailError] = useState("")
+    const [phoneError, setPhoneError] = useState("")
+    const [workError, setWorkError] = useState("")
+    const [passwordError, setpasswordError] = useState("")
+    const [conPasswordError, setConPasswordError] = useState("")
 
     // let name, value;
     const { firstName, lastName, email, phone, work, password, conPassword } = user;
@@ -20,9 +28,27 @@ const Register = () => {
     const handleChanged = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
+
     };
     const submitData = async (e) => {
         e.preventDefault();
+        if (firstName === null || firstName.trim().length === 0) {
+            setFirstNameError("Enter your FirstName.")
+            return;
+        }
+        if (lastName === null || lastName.trim().length === 0) {
+            setLastNameError("Enter your LastName.")
+            setFirstNameError("");
+            return;
+        }
+        else {
+            setLastNameError("");
+        }
+        if (email === null || email.trim().length === 0) {
+            setLastNameError("Enter your email.")
+            return;
+        }
+
         const resp = await axios.post('/register', {
             firstName, lastName, email, phone, work, password, conPassword
         }, {
@@ -54,7 +80,9 @@ const Register = () => {
                     </div>
                     <div className="form-group mt-3">
                         <label>First Name</label>
-                        <input
+                        <TextField
+                            error={FirstNameError.length > 0}
+                            helperText={FirstNameError}
                             name="firstName"
                             type="text"
                             className="form-control mt-1"
@@ -65,7 +93,9 @@ const Register = () => {
                     </div>
                     <div className="form-group mt-3">
                         <label>Last Name</label>
-                        <input
+                        <TextField
+                            error={lastNameError.length > 0}
+                            helperText={lastNameError}
                             name="lastName"
                             type="text"
                             className="form-control mt-1"
@@ -76,7 +106,7 @@ const Register = () => {
                     </div>
                     <div className="form-group mt-3">
                         <label>Email</label>
-                        <input
+                        <TextField
                             name="email"
                             type="email"
                             className="form-control mt-1"
@@ -86,7 +116,7 @@ const Register = () => {
                         />
                         <div className="form-group mt-3">
                             <label>Phone</label>
-                            <input
+                            <TextField
                                 name="phone"
                                 type="phone"
                                 className="form-control mt-1"
@@ -97,7 +127,7 @@ const Register = () => {
                         </div>
                         <div className="form-group mt-3">
                             <label>Work</label>
-                            <input
+                            <TextField
                                 name="work"
                                 type="text"
                                 className="form-control mt-1"
@@ -108,7 +138,7 @@ const Register = () => {
                         </div>
                         <div className="form-group mt-3">
                             <label>Password</label>
-                            <input
+                            <TextField
                                 name="password"
                                 type="password"
                                 className="form-control mt-1"
@@ -121,7 +151,7 @@ const Register = () => {
                     </div>
                     <div className="form-group mt-3">
                         <label>Confirm Password</label>
-                        <input
+                        <TextField
                             name="conPassword"
                             type="password"
                             className="form-control mt-1"

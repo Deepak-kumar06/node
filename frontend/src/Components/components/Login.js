@@ -1,6 +1,7 @@
 import React, { useState, } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/Validation';
+import { TextField } from '@mui/material'
 import axios from 'axios';
 
 
@@ -32,23 +33,35 @@ const Login = () => {
             alert("Please enter password.")
             return;
         }
-        console.log("Login sucessful", this.props);
-        const resp = await axios.post('/login', {
-            email: email, password: password
-        }, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (resp.status === 200) {
-            console.log(resp)
-            // alert("Login Successfull")
-            navigate('/')
-            // console.log("Login", data)
-        } else {
-            alert('Invalid Credentials ')
+        else {
+            setPasswordError("")
         }
-        console.log(resp, "Hello")
+        try {
+            const resp = await axios.post('/login', {
+                email: email, password: password
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            // const data = await resp.json();
+            console.log("resp.status===>>", resp.status);
+            console.log("resp ====>>", resp);
+            if (resp.status === 200) {
+                console.log("data", resp)
+                // alert("Login Successfull")
+                navigate('/')
+                // console.log("Login", data)
+            } else if (resp.status === 400) {
+                console.log(resp, "Hello")
+                alert('Invalid Credentials------------------------->>>>>>>> ')
+                console.log('Fukfadsjlf;kdjsa;lkf-------------------------->>>>')
+            }
+        } catch (e) {
+
+            console.log("e=====>", e);
+        }
+
     }
 
 
@@ -59,22 +72,24 @@ const Login = () => {
                     <h3 className="Auth-form-title">Sign In</h3>
                     <div className="form-group mt-3">
                         <label>Email address</label>
-                        <input
-                            error={emailError}
+                        <TextField
+                            error={emailError.length > 0}
+                            helperText={emailError}
                             type="text"
                             className="form-control mt-1"
                             placeholder="Enter email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        {emailError.trim().length > 0 ? <label style={{ color: "red" }}>{emailError}</label> : <label style={{ color: "red" }}>{emailError}</label>}
+                        {/* {emailError.trim().length > 0 ? <label style={{ color: "red" }}>{emailError}</label> : <label style={{ color: "red" }}>{emailError}</label>} */}
                         {/* {emailError === 1 ? <label style={{ color: "red" }}>{emailError}</label> : null} */}
 
                     </div>
                     <div className="form-group mt-3">
                         <label>Password</label>
-                        <input
-                            error={passwordError}
+                        <TextField
+                            error={passwordError.length > 0}
+                            helperText={passwordError}
                             type="password"
                             className="form-control mt-1"
                             placeholder="Enter password"

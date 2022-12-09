@@ -1,4 +1,5 @@
 import React from 'react'
+import { TextField } from '@mui/material'
 
 const Contact = () => {
     return (
@@ -9,19 +10,26 @@ const Contact = () => {
                     <label className="form-label" htmlFor="name">
                         Name
                     </label>
-                    <input className="form-control" type="text" id="name" required />
+                    <TextField
+                        placeholder='Name'
+                        className="form-control" type="text" id="name" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="email">
                         Email
                     </label>
-                    <input className="form-control" type="email" id="email" required />
+                    <TextField
+                        placeholder='Email'
+                        className="form-control" type="email" id="email" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="message">
                         Message
                     </label>
-                    <textarea className="form-control" id="message" required />
+                    <TextField multiline
+                        rows={4}
+                        placeholder='Message'
+                        className="form-control" id="message" />
                 </div>
                 <button className="btn btn-danger" type="submit">
                     Contact Us

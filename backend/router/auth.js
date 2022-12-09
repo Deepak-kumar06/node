@@ -4,15 +4,16 @@ const jwt = require("jsonwebtoken")
 const router = express.Router();
 require("../database/conn");
 const User = require("../users/Models/usersSchema");
+const auth = require("../middleware/atuntication")
 
 router.get("/", (req, resp) => {
     resp.send(`<h2>Welcome to Home Page router</h2>`);
 });
 
 
-router.get('/about', (req, resp) => {
+router.get('/about', auth, (req, resp) => {
     resp.cookie("Test", 'Deepak')
-    resp.send(`<h2>Welcome to About Page`);
+    resp.send(req.userID);
 
 })
 
