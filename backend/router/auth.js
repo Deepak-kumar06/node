@@ -11,16 +11,10 @@ router.get("/", (req, resp) => {
 });
 
 
-router.get('/about', auth, (req, resp) => {
-    resp.cookie("Test", 'Deepak')
-    resp.send(req.userID);
-
-})
-
 
 router.post("/register", async (req, resp) => {
     console.log("call register");
-    const { firstName, lastName, email, phone, work, password, conPassword } =
+    const { firstName, lastName, email, phone, organization, password, conPassword } =
         req.body;
     console.log("firstName===>", firstName);
     if (
@@ -28,9 +22,10 @@ router.post("/register", async (req, resp) => {
         !lastName ||
         !email ||
         !phone ||
-        !work ||
+        !organization ||
         !password ||
         !conPassword
+        // nocosaz @mailinator.com
     ) {
         return resp
             .status(422)
@@ -48,7 +43,7 @@ router.post("/register", async (req, resp) => {
                 lastName,
                 email,
                 phone,
-                work,
+                organization,
                 password,
                 conPassword,
             });
@@ -66,6 +61,7 @@ router.post("/register", async (req, resp) => {
 
 router.post("/login", async (req, resp) => {
     try {
+        let token;
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -76,13 +72,13 @@ router.post("/login", async (req, resp) => {
         if (userLogin) {
             const passMatch = await bcrypt.compare(password, userLogin.password)
 
-            let token = await userLogin.generateAuthToken()
+            token = await userLogin.generateAuthToken()
             console.log("token", token);
 
-            resp.cookie("cdsa", token, {
+            resp.cookie("jwtoken", token, {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
-            })
+            });
 
             if (!passMatch) {
                 resp.status(400).json({ message: "user error" });
@@ -101,6 +97,49 @@ router.post("/login", async (req, resp) => {
     //   console.log(req.body);
     //   resp.json({ message: "login data" });
 });
+
+//About Page
+
+router.get('/about', auth, (req, resp) => {
+    resp.cookie("Test", 'Deepak')
+    resp.send(req.rootUser);
+
+})
+
+//Contact Page
+
+router.get('/contactData', auth, (req, resp) => {
+    resp.cookie("Test", 'Deepak')
+    resp.send(req.rootUser);
+
+})
+router.post('/contact', auth, async (req, resp) => {
+    try {
+        const { firstName, email, phone, message } = req.body;
+
+        if (!firstName || !email || !phone || !message) {
+            console.log("Please full fil the data")
+            return resp.json({ error: "pls fill the data" })
+        }
+        const userContact = await User.findOne({ _id: req.userID })
+
+        if (userContact) {
+            const userMessage = await userContact.addMessage(firstName, email, phone, message);
+            await userContact.save();
+            resp.status(201).json({ message: "User message 1" })
+        }
+        // console.log(userMessage, "Hello")
+    } catch (err) {
+        console.log(err)
+    }
+
+})
+// Logout Router
+router.get('/logout', (req, resp) => {
+    resp.clearCookie("jwtoken", { path: '/' })
+    resp.send("User Logout");
+
+})
 
 
 

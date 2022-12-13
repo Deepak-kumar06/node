@@ -5,6 +5,7 @@ const cors = require("cors");
 // const morgan = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 // const data = require('./Data')
 
 dotenv.config({ path: './config.env' })
@@ -14,10 +15,10 @@ require('./database/conn');
 
 
 const app = express();
+app.use(cookieParser())
 app.use(cors());
 app.use(express.json())
 app.use(require('./router/auth'))
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // const hello = [{ title: "Hello,world (again)" }];

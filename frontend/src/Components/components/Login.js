@@ -1,11 +1,13 @@
-import React, { useState, } from 'react'
+import React, { useContext, useState, } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/Validation';
 import { TextField } from '@mui/material'
 import axios from 'axios';
 
+import { UserContext } from "../../App"
 
 const Login = () => {
+    const { state, dispatch } = useContext(UserContext);
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -48,12 +50,13 @@ const Login = () => {
             console.log("resp.status===>>", resp.status);
             console.log("resp ====>>", resp);
             if (resp.status === 200) {
+                dispatch({ type: "USER", payload: true })
                 console.log("data", resp)
                 // alert("Login Successfull")
                 navigate('/')
                 // console.log("Login", data)
             } else if (resp.status === 400) {
-                console.log(resp, "Hello")
+                console.log(resp, state, "Hello state")
                 alert('Invalid Credentials------------------------->>>>>>>> ')
                 console.log('Fukfadsjlf;kdjsa;lkf-------------------------->>>>')
             }
@@ -73,9 +76,10 @@ const Login = () => {
                     <div className="form-group mt-3">
                         <label>Email address</label>
                         <TextField
+                            autoComplete='email'
+                            type="text"
                             error={emailError.length > 0}
                             helperText={emailError}
-                            type="text"
                             className="form-control mt-1"
                             placeholder="Enter email"
                             value={email}
@@ -88,6 +92,7 @@ const Login = () => {
                     <div className="form-group mt-3">
                         <label>Password</label>
                         <TextField
+                            autoComplete='password'
                             error={passwordError.length > 0}
                             helperText={passwordError}
                             type="password"

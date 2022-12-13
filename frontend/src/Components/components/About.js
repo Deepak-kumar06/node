@@ -1,28 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import { TextField } from "@mui/material";
+import axios from "axios";
 
 const About = () => {
     const navigate = useNavigate();
+    const [userData, setUserData] = useState({});
     const callAboutPageFun = async () => {
         try {
-            const resp = await fetch('/about', {
-                method: "GEt",
+            const resp = await axios.get('/about', {
                 headers: {
-                    Accept: "application/json",
+                    // Accept: "application/json",
                     "Content-Type": "application/json"
                 },
-                credentials: "include"
+                // credentials: "include"
             });
-            const data = await resp.json();
-            console.log(data)
+            console.log("resp", resp)
+            setUserData(resp.data);
+            console.log(userData)
             if (!resp === 200) {
                 const error = new Error(resp.error);
                 throw error;
             }
         } catch (err) {
             console.log(err)
-            navigate('/login')
+            // navigate('/login')
         }
     }
 
@@ -42,128 +44,65 @@ const About = () => {
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                             alt=""
                         />
-                        <span className="font-weight-bold">Edogaru</span>
-                        <span className="text-black-50">edogaru@mail.com.my</span>
+                        <span className="font-weight-bold">{userData.firstName}</span>
+                        <span className="text-black-50"> {userData.email}</span>
                         <span> </span>
                     </div>
                 </div>
-                <div className="col-md-5 border-right">
-                    <div className="p-3 py-5">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="col-md-7 border-right">
+                    <div className="pt-5">
+                        <div className="d-flex justify-content-between align-items-center">
                             <h4 className="text-right">Profile Settings</h4>
-                        </div>
-                    </div>
-                    <div className="row mt-2">
-                        <div className="col-md-6">
-                            <label className="labels">Name</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="first name"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <label className="labels">Surname</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                // value=""
-                                placeholder="surname"
-                            />
                         </div>
                     </div>
                     <div className="row mt-3">
                         <div className="col-md-12">
-                            <label className="labels">Mobile Number</label>
+                            <label className="labels">First Name</label>
                             <TextField
+                                autoComplete="firstName"
                                 type="text"
                                 className="form-control"
-                                placeholder="enter phone number"
-                            // value=""
+                                placeholder="First Name"
+                                value={userData.firstName}
                             />
                         </div>
                         <div className="col-md-12">
-                            <label className="labels">Address Line 1</label>
+                            <label className="labels">Last Name</label>
                             <TextField
+                                autoComplete="lastName"
                                 type="text"
                                 className="form-control"
-                                placeholder="enter address line 1"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <label className="labels">Address Line 2</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="enter address line 2"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <label className="labels">Postcode</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="enter address line 2"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <label className="labels">State</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="enter address line 2"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <label className="labels">Area</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="enter address line 2"
-                            // value=""
+                                placeholder="Last Name"
+                                value={userData.lastName}
                             />
                         </div>
                         <div className="col-md-12">
                             <label className="labels">Email ID</label>
                             <TextField
+                                autoComplete="email"
                                 type="text"
                                 className="form-control"
                                 placeholder="enter email id"
-                            // value=""
+                                value={userData.email}
                             />
                         </div>
                         <div className="col-md-12">
-                            <label className="labels">Education</label>
+                            <label className="labels">Mobile Number</label>
                             <TextField
-                                type="text"
+                                autoComplete="phone"
+                                type="phone"
                                 className="form-control"
-                                placeholder="education"
-                            // value=""
+                                placeholder="Phone Number"
+                                value={userData.phone}
                             />
                         </div>
-                    </div>
-                    <div className="row mt-3">
-                        <div className="col-md-6">
-                            <label className="labels">Country</label>
+                        <div className="col-md-12">
+                            <label className="labels">Organization</label>
                             <TextField
                                 type="text"
                                 className="form-control"
-                                placeholder="country"
-                            // value=""
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <label className="labels">State/Region</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                // value=""
-                                placeholder="state"
+                                placeholder="Organization"
+                                value={userData.organization}
                             />
                         </div>
                     </div>
@@ -171,36 +110,6 @@ const About = () => {
                         <button className="btn btn-primary profile-button" type="button">
                             Save Profile
                         </button>
-                    </div>
-                </div>
-                <div className="col-md-4">
-                    <div className="p-3 py-5">
-                        <div className="d-flex justify-content-between align-items-center experience">
-                            <span>Edit Experience</span>
-                            <span className="border px-3 p-1 add-experience">
-                                <i className="fa fa-plus"></i>&nbsp;Experience
-                            </span>
-                        </div>
-                        <br />
-                        <div className="col-md-12">
-                            <label className="labels">Experience in Designing</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="experience"
-                            // value=""
-                            />
-                        </div>{" "}
-                        <br />
-                        <div className="col-md-12">
-                            <label className="labels">Additional Details</label>
-                            <TextField
-                                type="text"
-                                className="form-control"
-                                placeholder="additional details"
-                            // value=""
-                            />
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import "./App.css";
-import { useHorizontalScroll } from "./Components/useHorizontal";
+// import { useHorizontalScroll } from "./Components/useHorizontal";
 
 import { Route, Routes } from "react-router-dom";
 //CSS
@@ -12,12 +12,18 @@ import Login from "./Components/components/Login";
 import Register from "./Components/components/Register";
 import Contact from "./Components/components/Contact";
 import Navbar from "./Components/components/Navbar";
+import Logout from "./Components/components/Logout";
+import { createContext, useReducer } from "react";
+import { initialState, reducer } from "../src/reducer/useReducer"
+
+export const UserContext = createContext();
 
 
 function App() {
-  const scrollRef = useHorizontalScroll();
+  // const scrollRef = useHorizontalScroll();
+  const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <div >
+    <UserContext.Provider value={{ state, dispatch }} >
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -25,8 +31,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
-    </div>
+    </UserContext.Provider>
   );
 }
 
