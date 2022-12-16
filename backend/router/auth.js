@@ -140,6 +140,77 @@ router.get('/logout', (req, resp) => {
     resp.send("User Logout");
 
 })
+router.get('/', (req, resp) => {
+    resp.clearCookie("jwtoken", { path: '/' })
+    resp.send("User Logout");
+
+})
+
+router.get('/user', async (req, resp) => {
+    const userData = await User.find();
+    if (userData.length > 0) {
+        resp.send(userData);
+    }
+    else {
+        console.log({ Error: "User Not Found" })
+    }
+})
+
+// recordRoutes.route("/:id").delete((req, response) => {
+//     let myquery = { _id: ObjectId(req.params.id) };
+//     collection("user").deleteOne(myquery, function (err, obj) {
+//         if (err) throw err;
+//         console.log("1 document deleted");
+//         response.json(obj);
+//     });
+// });
+
+router.get('/gettinguserdata/:id', async (req, res) => {
+    try {
+        let result = await User.findOne({ _id: req.params.id })
+        res.status(200).send(result)
+    }
+    catch (err) {
+        res.status(400).send({ Error: err })
+    }
+})
+
+router.delete('/deluser/:id', async (req, resp) => {
+    try {
+        let userDel = await User.deleteOne({ _id: req.params.id })
+        resp.status(200).send(userDel)
+        // console.log("User Delete")
+    } catch (error) {
+        resp.status(400).json({ message: `User not Delete ${error}` })
+    }
+})
+
+router.put('/update/:id', async (req, resp) => {
+    let userUpdate = await User.updateOne(
+        { _id: req.params.id },
+        {
+            $set: {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                phone: req.body.phone,
+                organization: req.body.organization,
+            }
+        }
+    )
+    resp.send(userUpdate)
+})
+// To Delete the Users 
+// router.delete('/deluser/:id', async (req, res) => {
+//     try {
+//         let result = await User.deleteOne({ _id: req.params.id })
+//         res.status(200).send(result)
+//     }
+//     catch (err) {
+//         res.status(400).send({ Error: err })
+//     }
+// })
+
 
 
 

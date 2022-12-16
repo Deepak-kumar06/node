@@ -15,6 +15,7 @@ import Navbar from "./Components/components/Navbar";
 import Logout from "./Components/components/Logout";
 import { createContext, useReducer } from "react";
 import { initialState, reducer } from "../src/reducer/useReducer"
+import AdminRouter from "./Components/components/Admin/Index";
 
 export const UserContext = createContext();
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path={`/admin/*`} element={<AdminRouter />} />
       </Routes>
     </UserContext.Provider>
   );
