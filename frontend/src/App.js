@@ -26,7 +26,6 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }} >
       <Navbar />
-      <h1 className="text-3xl font-bold underline">Hello</h1>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

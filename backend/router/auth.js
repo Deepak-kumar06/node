@@ -200,6 +200,18 @@ router.put('/update/:id', async (req, resp) => {
     )
     resp.send(userUpdate)
 })
+// search data from user data
+
+router.get("/search/:key", async (req, resp) => {
+    let result = await User.find({
+        $or: [
+            { name: { $regex: req.params.key } },
+            { email: { $regex: req.params.key } },
+        ],
+    });
+    resp.send(result);
+});
+
 // To Delete the Users 
 // router.delete('/deluser/:id', async (req, res) => {
 //     try {
